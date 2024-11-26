@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 const authRoutes = require("./routes/auth");
 const jobRoutes = require("./routes/jobs");
+const connectDB=require("./db/connect");
 
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");
@@ -63,16 +64,22 @@ app.use("/api/v1/jobs",jobRoutes);
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3330;
+
+
 
 const start = async () => {
   try {
+    const result=await connectDB(process.env.MONGO_URI);
+    console.log("Connected to DB👻");
+    
     app.listen(port, () =>
       console.log(`Server is listening on port ${port}...`)
     );
   } catch (error) {
-    console.log(error);
+    console.log("Error🚩: ",error);
   }
 };
 
 start();
+
