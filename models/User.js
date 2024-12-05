@@ -1,5 +1,6 @@
 const { required } = require("joi");
 const mongoose = require("mongoose");
+const bcrypt=require("bcryptjs");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -23,6 +24,23 @@ const userSchema = new mongoose.Schema({
     minLength:3
   }
 });
+
+
+/*
+PRE MIDDLEWARE
+  ->This is the pre middleware that executes before the hook(here the save hook) occurs
+  ->Hook here means this middleware would be executed before the document is saved to the db
+  ->this keyword refers to the document
+  -> use the function syntax because arrow functions does not have their own this keyword
+*/ 
+userSchema.pre("save",async function(){
+  console.log("BEFORE THE SAVE OPERATION");
+  
+  const salt=await bcrypt.genSalt(10);
+  const hashedPassword=await bcrypt.hash(this.password,salt);
+  this.password=hashedPassword;
+
+})
 
 // create a model from the schema
 module.exports=mongoose.model("User",userSchema);
