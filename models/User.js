@@ -2,6 +2,7 @@ const { required } = require("joi");
 const mongoose = require("mongoose");
 const bcrypt=require("bcryptjs");
 const jwt=require("jsonwebtoken")
+require("dotenv").config();
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -44,7 +45,12 @@ userSchema.pre("save",async function(){
 })
 
 userSchema.methods.createJWTToken= function(){
-  return jwt.sign({userId:this._id,userName:this.name},"mySecretKey",{expiresIn:"30d"});
+  return jwt.sign({userId:this._id,userName:this.name},process.env.SECRET_KEY,{expiresIn:process.env.TOKEN_LIFETIME});
+}
+
+userSchema.methods.checkPassword=async function(receivedPassword){
+  const isMatch= await bcrypt.compare(receivedPassword,this.password);
+  return isMatch;
 }
 
 // create a model from the schema
