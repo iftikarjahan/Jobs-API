@@ -8,7 +8,7 @@ const createJobController=(req,res,next)=>{
 
 // read
 const getAllJobsController=(req,res,next)=>{
-    res.send("get all jobs")
+    res.json({...req.user});
 }
 
 const getSingleJobController=(req,res,next)=>{
