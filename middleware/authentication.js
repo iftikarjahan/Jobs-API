@@ -16,7 +16,7 @@ const authMiddleware=(req,res,next)=>{
     try {
         //Extracting the data from the token
         const payload=jwt.verify(token,process.env.SECRET_KEY);
-        console.log(payload);
+        // console.log(payload);
         
         // attaching the data received from the payload to the request
         req.user={userId:payload.userId,userName:payload.userName}; //now the data can be used wherever the request is received

@@ -1,8 +1,15 @@
-// the app would perform basic CRUD functionality
+const Job=require("../models/Job");
+const {StatusCodes}=require("http-status-codes");
+
+
 
 // create
-const createJobController=(req,res,next)=>{
-    res.send("job created")
+const createJobController=async (req,res,next)=>{
+    const {userId,userName}=req.user;
+    req.body.createdBy=userId;
+    // now we need to create a job
+    const newJob=await Job.create({...req.body});
+    res.status(StatusCodes.CREATED).json(newJob);
 
 }
 
