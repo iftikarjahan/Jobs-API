@@ -1,6 +1,6 @@
 const Job=require("../models/Job");
 const {StatusCodes}=require("http-status-codes");
-const {NotFoundError}=require("../errors/not-found");
+const {NotFoundError,BadRequestError}=require("../errors/not-found");
 
 
 
@@ -47,8 +47,18 @@ const getSingleJobController=async (req,res,next)=>{
 }
 
 // update
-const updateJobController=(req,res,next)=>{
-    res.send("update job");
+const updateJobController=async (req,res,next)=>{
+    const{body:{company,position},user:{userId,userName},params:{id:jobId}}=req;
+    // check if the credentials were provided or not
+    if(company==="" || position===""){
+        throw new BadRequestError("Please provide both the credentials you want to update🐰");
+    }
+    const updatedJob=await Job.findByIdAndUpdate({_id:jobId,createdBy:userId},{company:company,position:position},{new:true,runValidators:true});
+    if(!updatedJob){
+        throw new NotFoundError("Unable to update the job, maybe not found the job🤔🤔");
+    }
+    
+    res.status(StatusCodes.OK).json(updatedJob);
 }
 
 // delete
