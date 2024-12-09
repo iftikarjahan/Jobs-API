@@ -14,8 +14,9 @@ const createJobController=async (req,res,next)=>{
 }
 
 // read
-const getAllJobsController=(req,res,next)=>{
-    res.json({...req.user});
+const getAllJobsController=async (req,res,next)=>{
+    const jobs=await Job.find({createdBy:req.user.userId},null,{sort:{createdAt:1}});
+    res.status(StatusCodes.OK).json({jobs,noOfJobs:jobs.length});
 }
 
 const getSingleJobController=(req,res,next)=>{
