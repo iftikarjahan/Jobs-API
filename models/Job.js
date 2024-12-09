@@ -22,6 +22,11 @@ const jobSchema=mongoose.Schema({
         ref:"User",
         required:[true,"Please provide the user"]
     },
+    createdByName:{
+        type:"String",
+        required:[true,"Please Provide the userName who created the job"],
+        ref:"User"
+    }
 },{timestamps:true})
 
 module.exports=mongoose.model("Job",jobSchema);

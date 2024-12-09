@@ -7,6 +7,7 @@ const {StatusCodes}=require("http-status-codes");
 const createJobController=async (req,res,next)=>{
     const {userId,userName}=req.user;
     req.body.createdBy=userId;
+    req.body.createdByName=userName;
     // now we need to create a job
     const newJob=await Job.create({...req.body});
     res.status(StatusCodes.CREATED).json(newJob);
