@@ -1,6 +1,6 @@
 const Job=require("../models/Job");
 const {StatusCodes}=require("http-status-codes");
-const {NotFoundError,BadRequestError}=require("../errors/not-found");
+const {NotFoundError,BadRequestError}=require("../errors");
 
 
 
@@ -62,10 +62,18 @@ const updateJobController=async (req,res,next)=>{
 }
 
 // delete
-const deleteJobController=(req,res,next)=>{
-    res.send("delete job")
+const deleteJobController=async (req,res,next)=>{
+    
+    const{user:{userId,userName},params:{id:jobId}}=req;
+    const deletedJob=await Job.findByIdAndDelete({_id:jobId,createdBy:userId});
+    console.log(deletedJob);
+    
+    if(!deletedJob){
+        
+        throw new NotFoundError(`No job found with the id: ${jobId}🥶`);
+    }
+    res.status(StatusCodes.OK).json({msg:"Job Deleted👻",deletedJob});
 }
-
 
 module.exports={
     createJobController,

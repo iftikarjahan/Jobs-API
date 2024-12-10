@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 
+
+mongoose.set('useFindAndModify', false);
 const connectDB = (url) => {
   // mongoose.connect() returns a promise which needs to be resolved later
   // options are used for preventing the deprication warnings
