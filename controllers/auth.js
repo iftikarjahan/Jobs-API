@@ -4,6 +4,15 @@ const jwt = require("jsonwebtoken");
 const { BadRequestError, UnauthenticatedError } = require("../errors");
 
 const registerController = async (req, res, next) => {
+    /*
+    ->Note an important thing that here we are not checking whether the user is providing
+    name, email or password. In other words, we are not checking wheteher some fields are missng
+    or not.
+    Because we have already added those checks as validation errors which is done by 
+    mongoose
+    */ 
+
+
   const createdUser = await User.create({ ...req.body }); //this is the document instance that has been created
   /*
     ->Note an important thing that we should not send the user credentials as a response to
