@@ -65,7 +65,7 @@ app.use("/api/v1/jobs",authMiddleware,jobRoutes);
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-const port = process.env.PORT || 3330;
+const port = process.env.PORT || 3000;
 
 
 
